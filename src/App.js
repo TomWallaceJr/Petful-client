@@ -1,18 +1,19 @@
 import React from 'react'
 import Home from './components/Home'
 import AdoptionPage from './components/AdoptionPage'
+import Store from '/Context/Store'
 import { BrowserRouter, Route } from 'react-router-dom'
 import AdoptionService from './services/api-service'
 import config from './config'
 
 export default class App extends React.Component {
-  state = {
-    people: [],
-    cats: [],
-    dogs: [],
-    adopting: false,
-    error: null
-  }
+  // state = {
+  //   people: [],
+  //   cats: [],
+  //   dogs: [],
+  //   adopting: false,
+  //   error: null
+  // }
 
   // sets adopting state to true which will render adopting page
   adoptButtonClick() {
@@ -54,24 +55,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (this.state.adopting === false) {
-      return (
-        <>
-          <Home adoptButtonClick={() => this.adoptButtonClick()} />
-        </>
-      )
-    }
-
-    if (this.state.adopting === true) {
-      return (
-        <>
-          <AdoptionPage />
-        </>
-      )
-    }
-
+    return (
+      <Store>
+      </Store>
+    )
   }
-
 }
 
 

@@ -1,17 +1,64 @@
 import React from 'react'
-import { BrowserRouter, Link } from 'react-router-dom'
-import PersonQueue from './PersonQueue'
 
-export default function Home() {
-    return (
-        <>
-            <h1>Adoption Page</h1>
-            <hr />
-            <PersonQueue />
-            <p>This is a Pet adoption agency where you get in line and can either adopt the next
-            dog or next cat in line for adoption!
-            </p>
-            <p>Enjoy your rescue pet!</p>
-        </>
-    )
+
+class AdoptionPage extends React.Component {
+    state = {
+        people: [],
+        cats: [],
+        dogs: [],
+        adopting: false,
+        error: null
+    }
+
+    // sets adopting state to true which will render adopting page
+    adoptButtonClick() {
+        console.log('click');
+        this.setState({
+            adopting: true
+        })
+    }
+
+    componentDidMount() {
+        // fetch dogs and store them in state
+        fetch(`http://localhost:8000/pets/api/getalldogs`)
+            .then(res => res.json())
+            .then(dogs => {
+                console.log(dogs)
+                this.setState({
+                    dogs
+                })
+            });
+        // fetch cats and store them in state
+        fetch(`http://localhost:8000/pets/api/getallcats`)
+            .then(res => res.json())
+            .then(cats => {
+                console.log(cats)
+                this.setState({
+                    cats
+                })
+            });
+
+        // fetch people and store them in state
+        fetch(`http://localhost:8000/people`)
+            .then(res => res.json())
+            .then(people => {
+                console.log(people)
+                this.setState({
+                    people
+                })
+            });
+    }
+
+    render() {
+        return (
+            <div className='adoption-page'>
+                <h1>Hello</h1>
+            </div>
+        )
+    }
 }
+
+export default AdoptionPage;
+
+
+

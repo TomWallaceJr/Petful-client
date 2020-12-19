@@ -1,9 +1,9 @@
 import React from 'react'
-import Home from './components/Home'
-import AdoptionPage from './components/AdoptionPage'
+import Home from './Home'
+import AdoptionPage from './AdoptionPage'
 import { BrowserRouter, Route } from 'react-router-dom'
 import AdoptionService from './services/api-service'
-import config from './config'
+import config from '../config'
 
 export default class App extends React.Component {
   state = {

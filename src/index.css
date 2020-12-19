@@ -2,10 +2,10 @@ h1 {
     text-align: center;
 }
 
-.personQ {
+.person-queue {
     float: left;
-    width: 15%;
-    background-color: aqua;
+    width: 20%;
+    background-color: rgb(175, 247, 247);
     border: 1px solid;
 }
 

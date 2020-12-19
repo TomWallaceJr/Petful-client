@@ -1,22 +1,17 @@
-import React from 'react'
-
+import React from 'react';
+import Header from './Header';
+import PersonQueue from './PersonQueue';
 
 class AdoptionPage extends React.Component {
     state = {
         people: [],
+        currentUser: '',
         cats: [],
         dogs: [],
         adopting: false,
         error: null
     }
 
-    // sets adopting state to true which will render adopting page
-    adoptButtonClick() {
-        console.log('click');
-        this.setState({
-            adopting: true
-        })
-    }
 
     componentDidMount() {
         // fetch dogs and store them in state
@@ -37,7 +32,6 @@ class AdoptionPage extends React.Component {
                     cats
                 })
             });
-
         // fetch people and store them in state
         fetch(`http://localhost:8000/people`)
             .then(res => res.json())
@@ -49,10 +43,18 @@ class AdoptionPage extends React.Component {
             });
     }
 
+    addCurrentUser = (name) => {
+        this.setState({
+            currentUser: name
+        })
+    }
+
     render() {
         return (
             <div className='adoption-page'>
-                <h1>Hello</h1>
+                <Header />
+                <hr />
+                <PersonQueue addCurrentUser={this.addCurrentUser} />
             </div>
         )
     }

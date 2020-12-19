@@ -7,14 +7,7 @@ import AdoptionService from './services/api-service'
 import config from './config'
 
 export default class App extends React.Component {
-  // state = {
-  //   people: [],
-  //   cats: [],
-  //   dogs: [],
-  //   adopting: false,
-  //   error: null
-  // }
-
+ 
   // sets adopting state to true which will render adopting page
   adoptButtonClick() {
     console.log('click');

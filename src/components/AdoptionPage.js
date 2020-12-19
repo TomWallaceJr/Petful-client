@@ -1,5 +1,7 @@
 import React from 'react';
 import Header from './Header';
+import NextCat from './NextCat';
+import NextDog from './NextDog';
 import PersonQueue from './PersonQueue';
 
 class AdoptionPage extends React.Component {
@@ -8,17 +10,18 @@ class AdoptionPage extends React.Component {
         currentUser: '',
         cats: [],
         dogs: [],
+        nextCat: {},
+        nextDog: {},
         adopting: false,
         error: null
     }
 
-
+    // on Componenet mount make all API get requests and store tehm in state
     componentDidMount() {
         // fetch dogs and store them in state
         fetch(`http://localhost:8000/pets/api/getalldogs`)
             .then(res => res.json())
             .then(dogs => {
-                console.log(dogs)
                 this.setState({
                     dogs
                 })
@@ -27,7 +30,6 @@ class AdoptionPage extends React.Component {
         fetch(`http://localhost:8000/pets/api/getallcats`)
             .then(res => res.json())
             .then(cats => {
-                console.log(cats)
                 this.setState({
                     cats
                 })
@@ -36,11 +38,28 @@ class AdoptionPage extends React.Component {
         fetch(`http://localhost:8000/people`)
             .then(res => res.json())
             .then(people => {
-                console.log(people)
                 this.setState({
                     people
                 })
             });
+
+        // fetch next cat in line
+        fetch(`http://localhost:8000/pets/api/nextcat`)
+            .then(res => res.json())
+            .then(nextCat => {
+                this.setState({
+                    nextCat
+                })
+            })
+
+        // fetch next dog in line
+        fetch(`http://localhost:8000/pets/api/nextdog`)
+            .then(res => res.json())
+            .then(nextDog => {
+                this.setState({
+                    nextDog
+                })
+            })
     }
 
     addCurrentUser = (name) => {
@@ -49,12 +68,17 @@ class AdoptionPage extends React.Component {
         })
     }
 
+
     render() {
         return (
             <div className='adoption-page'>
                 <Header />
                 <hr />
-                <PersonQueue addCurrentUser={this.addCurrentUser} />
+                <div className='pets-and-queue'>
+                    <PersonQueue addCurrentUser={this.addCurrentUser} />
+                    <NextCat nextCat={this.state.nextCat} />
+                    <NextDog nextDog={this.state.nextDog} />
+                </div>
             </div>
         )
     }

@@ -2,14 +2,42 @@ h1 {
     text-align: center;
 }
 
-.person-queue {
-    float: left;
-    width: 20%;
-    background-color: rgb(175, 247, 247);
-    border: 1px solid;
+ul li {
+    text-decoration: none;
 }
-
 .name-textbox {
     width: 75%;
     margin: 2%;
+}
+
+.pets-and-queue {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    text-align: center;
+    align-items: baseline;
+    margin: 2px;
+}
+
+.person-queue {
+    border: 1px solid red;
+    text-align: center;
+    max-width: 400px;
+    margin: 50px;
+}
+
+.next-pet-container {
+    border: solid 1px red;
+    text-align: center;
+    margin: 50px;
+    margin-bottom: 100px;
+    padding: 20px;
+}
+
+.adopt-button {
+    margin-bottom: 10px;
+}
+
+img {
+    max-width: 400px;
 }

@@ -13,7 +13,6 @@ class PersonQueue extends React.Component {
     submitForm = (e) => {
         e.preventDefault();
         const name = this.nameRef.current.value;
-        console.log(name);
         // Update CurrentUser in Main State
         this.props.addCurrentUser(name);
         // make POST request to REST API and add current user to people queue

@@ -23,7 +23,7 @@ ul li {
     border: 1px solid red;
     text-align: center;
     max-width: 400px;
-    margin: 50px;
+    margin: auto;
 }
 
 .next-pet-container {
@@ -34,10 +34,21 @@ ul li {
     padding: 20px;
 }
 
-.adopt-button {
+button {
     margin-bottom: 10px;
 }
 
 img {
     max-width: 400px;
+}
+
+@media only screen and (min-width: 900px) {
+
+    .next-pet-container {
+        width: 40%;
+    }
+
+    img {
+        width: 80%;
+    }
 }

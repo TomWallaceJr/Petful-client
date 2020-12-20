@@ -1,4 +1,5 @@
 import React from 'react';
+import Person from './Person';
 import config from '../config';
 
 class PersonQueue extends React.Component {
@@ -46,11 +47,13 @@ class PersonQueue extends React.Component {
         return (
             <>
                 <div className='person-queue'>
-                    <h3>Queue</h3>
+                    <h3>Next Up</h3>
                     <ul>
-                        <li>Person 1</li>
-                        <li>Person 2</li>
-                        <li>Person 3</li>
+                        {this.props.people.map((key, i) =>
+                            <Person
+                                key={key}
+                                index={key}
+                                name={key} />)}
                     </ul>
                     <form className='add-person-form' onSubmit={this.submitForm}>
                         <input

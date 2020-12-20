@@ -74,11 +74,15 @@ class AdoptionPage extends React.Component {
             <div className='adoption-page'>
                 <Header />
                 <hr />
+
+                <PersonQueue
+                    addCurrentUser={this.addCurrentUser}
+                    people={this.state.people} />
                 <div className='pets-and-queue'>
-                    <PersonQueue addCurrentUser={this.addCurrentUser} />
                     <NextCat nextCat={this.state.nextCat} />
                     <NextDog nextDog={this.state.nextDog} />
                 </div>
+
             </div>
         )
     }

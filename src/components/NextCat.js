@@ -3,13 +3,6 @@ import React from 'react';
 
 class NextCat extends React.Component {
 
-    // shows next cat
-    showNextCat = () => {
-        console.log(this.props.nextCat.breed)
-        // let newCat = this.props.nextCat.map(cat => cat);
-        //return newCat;
-    }
-
     render() {
         const nextCat = this.props.nextCat;
         const { age, breed, imageDescription, imageURL, name, sex, story } = nextCat

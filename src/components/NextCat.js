@@ -12,7 +12,11 @@ class NextCat extends React.Component {
                 <img src={imageURL} alt={imageDescription}></img>
                 <p>{age} year old {sex} {breed}</p>
                 <p>{story}</p>
-                <button className='adopt-button'>Adopt Now</button>
+                <button
+                    className='adopt-button'
+                    onClick={this.props.adoptNow}>
+                    Adopt Now
+                </button>
             </div>
         )
     }

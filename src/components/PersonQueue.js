@@ -30,7 +30,8 @@ class PersonQueue extends React.Component {
                 //console.log(res)
                 return res.json()
             }).then(result => {
-                console.log(result)
+                console.log('result from fetch', result);
+                console.log('this.props.people', this.props.people)
             }).catch(error => {
                 alert(`Something went wrong! ${error.message}`)
             })
@@ -49,11 +50,11 @@ class PersonQueue extends React.Component {
                 <div className='person-queue'>
                     <h3>Next Up</h3>
                     <ul>
-                        {this.props.people.map((key, i) =>
+                        {Object.keys(this.props.people).map((key, i) =>
                             <Person
-                                key={key}
-                                index={key}
-                                name={key} />)}
+                                key={i}
+                                index={i}
+                                name={this.props.people[key]} />)}
                     </ul>
                     <form className='add-person-form' onSubmit={this.submitForm}>
                         <input

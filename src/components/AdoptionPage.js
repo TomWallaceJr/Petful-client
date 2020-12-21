@@ -3,6 +3,7 @@ import Header from './Header';
 import NextCat from './NextCat';
 import NextDog from './NextDog';
 import PersonQueue from './PersonQueue';
+import ConfirmationPage from './ConfirmationPage';
 
 class AdoptionPage extends React.Component {
     state = {
@@ -12,7 +13,7 @@ class AdoptionPage extends React.Component {
         dogs: [],
         nextCat: {},
         nextDog: {},
-        adopting: false,
+        adopted: false,
         error: null
     }
 
@@ -63,28 +64,62 @@ class AdoptionPage extends React.Component {
     }
 
     addCurrentUser = (name) => {
+        const people = { ...this.state.people };
+        people[this.state.people.length + 1] = name;
         this.setState({
-            currentUser: name
+            currentUser: name,
+            people
         })
+    }
+
+    adoptNow = () => {
+        fetch(`http://localhost:8000/pets/api/removecat`, {
+            method: 'delete'
+        })
+            .then(res => res.json())
+        const catList = { ...this.state.cats };
+        Object.keys(catList).shift();
+        console.log('catList', catList)
+        this.setState({
+            adopted: true
+        })
+        // push to confirmation page
+        console.log(this.state.cats);
+
     }
 
 
     render() {
-        return (
-            <div className='adoption-page'>
-                <Header />
-                <hr />
+        if (!this.state.adopted) {
+            return (
+                <div className='adoption-page'>
+                    <Header />
+                    <hr />
+                    <PersonQueue
+                        addCurrentUser={this.addCurrentUser}
+                        people={this.state.people} />
+                    <div className='pets-and-queue'>
+                        <NextCat
+                            nextCat={this.state.nextCat}
+                            adoptNow={this.adoptNow} />
+                        <NextDog nextDog={this.state.nextDog} />
+                    </div>
 
-                <PersonQueue
-                    addCurrentUser={this.addCurrentUser}
-                    people={this.state.people} />
-                <div className='pets-and-queue'>
-                    <NextCat nextCat={this.state.nextCat} />
-                    <NextDog nextDog={this.state.nextDog} />
                 </div>
+            )
+        }
+        else {
+            return (
+                <div className='confirmation-page'>
+                    <ConfirmationPage
+                        cats={this.state.cats}
+                        nextCat={this.state.nextCat}
+                        dogs={this.state.dogs}
+                        currentUser={this.state.currentUser} />
+                </div>
+            )
+        }
 
-            </div>
-        )
     }
 }
 

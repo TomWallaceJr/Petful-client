@@ -4,6 +4,10 @@ import config from '../config';
 
 class PersonQueue extends React.Component {
 
+    state = {
+        signedUp: false
+    }
+
     nameRef = React.createRef();
 
 
@@ -14,6 +18,9 @@ class PersonQueue extends React.Component {
     submitForm = (e) => {
         e.preventDefault();
         const name = this.nameRef.current.value;
+        this.setState({
+            signedUp: true
+        })
         // Update CurrentUser in Main State
         this.props.addCurrentUser(name);
         // make POST request to REST API and add current user to people queue
@@ -29,9 +36,6 @@ class PersonQueue extends React.Component {
             }).then(res => {
                 //console.log(res)
                 return res.json()
-            }).then(result => {
-                console.log('result from fetch', result);
-                console.log('this.props.people', this.props.people)
             }).catch(error => {
                 alert(`Something went wrong! ${error.message}`)
             })
@@ -45,6 +49,7 @@ class PersonQueue extends React.Component {
     }
 
     render() {
+
         return (
             <>
                 <div className='person-queue'>
@@ -65,7 +70,11 @@ class PersonQueue extends React.Component {
                             placeholder='Your Name'
                             required
                         />
-                        <button className='line-button'>Get In Line!</button>
+
+                        <button
+                            className='line-button'
+                            disabled={this.state.signedUp}
+                        >Get In Line!</button>
                     </form>
                 </div>
             </>

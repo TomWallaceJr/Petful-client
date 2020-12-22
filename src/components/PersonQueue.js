@@ -8,7 +8,14 @@ class PersonQueue extends React.Component {
 
     state = {
         name: '',
+        currentUser: '',
+        nameList: [],
         signedUp: false
+    }
+
+    setNameList = () => {
+        this.state.nameList = this.context.people;
+        console.log(this.state.nameList)
     }
 
     handleNameChange = e => {
@@ -31,16 +38,16 @@ class PersonQueue extends React.Component {
                 name: name
             })
         }).then(res => res.json())
-            .then(res => { this.context.setCurrentUser(res) })
+            .then(res => {
+                this.context.setPeople(res);
+            })
+            .then(res => this.setState({
+                signedUp: true,
+                currentUser: name
+            }))
             .catch(error => {
                 alert(`Something went wrong! ${error.message}`)
             })
-
-        if (this.context.currentUser) {
-            this.setState({
-                signedUp: true
-            })
-        }
         e.currentTarget.reset();
     }
 

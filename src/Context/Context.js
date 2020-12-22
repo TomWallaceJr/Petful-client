@@ -21,7 +21,7 @@ export class PetfulProvider extends React.Component {
         dogs: {},
         cats: {},
         people: [],
-        currentUser: '',
+        currentUser: [],
         nextCat: {},
         nextDog: {}
     };

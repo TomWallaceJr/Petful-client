@@ -1,12 +1,11 @@
 import React from 'react';
-
+import PetfulContext from '../Context/Context';
 
 class NextDog extends React.Component {
-
-
+    static contextType = PetfulContext;
 
     render() {
-        const nextDog = this.props.nextDog;
+        const nextDog = this.context.nextDog;
         const { age, breed, imageDescription, imageURL, name, sex, story } = nextDog;
 
         if (!name) {

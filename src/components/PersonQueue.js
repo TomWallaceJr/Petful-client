@@ -52,12 +52,15 @@ class PersonQueue extends React.Component {
                 <div className='person-queue'>
                     <h3>Next Up</h3>
                     <ul>
-                        {this.context.people.map((key, i) =>
-                            <Person
-                                key={i}
-                                index={i}
-                                name={this.props.people[key]} />)}
+                        {this.context.people.map((names) => {
+                            return names.map((name, i) => {
+                                return (
+                                    <li key={i}>{name}</li>
+                                )
+                            })
+                        })}
                     </ul>
+
                     <form className='add-person-form' onSubmit={this.submitForm}>
                         <input
                             className='name-textbox'

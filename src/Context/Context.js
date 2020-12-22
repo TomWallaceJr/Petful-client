@@ -18,9 +18,7 @@ export default PetfulContext;
 
 export class PetfulProvider extends React.Component {
     state = {
-        dogs: {
-            list: []
-        },
+        dogs: {},
         cats: {},
         people: [],
         currentUser: '',
@@ -66,12 +64,12 @@ export class PetfulProvider extends React.Component {
             dogs: this.state.dogs,
             cats: this.state.cats,
             people: this.state.people,
-            setCats: this.state.setCats,
-            setDogs: this.state.setDogs,
-            setPeople: this.state.setPeople,
-            setCurrentUser: this.state.setCurrentUser,
-            setNextCat: this.state.setNextCat,
-            setNextDog: this.state.setNextDog
+            setCats: this.setCats,
+            setDogs: this.setDogs,
+            setPeople: this.setPeople,
+            setCurrentUser: this.setCurrentUser,
+            setNextCat: this.setNextCat,
+            setNextDog: this.setNextDog
         };
 
         return (

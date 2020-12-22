@@ -17,80 +17,78 @@ class AdoptionPage extends React.Component {
         adopted: false
     }
 
-    componentDidMount() {
-        console.log(this.context)
-    }
+
     // on Componenet mount make all API get requests and store tehm in state
-    // componentDidMount() {
-    //     // fetch dogs and store them in state
-    //     fetch(`${config.API_BASE_URL}/pets/api/getalldogs`)
-    //         .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-    //         .then(dogs => {
-    //             this.context.setDogs(dogs)
-    //         });
+    componentDidMount() {
+        // fetch dogs and store them in state
+        fetch(`${config.API_BASE_URL}/pets/api/getalldogs`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(dogs => {
+                this.context.setDogs(dogs)
+            });
 
-    //     // fetch cats and store them in state
-    //     fetch(`${config.API_BASE_URL}/pets/api/getallcats`)
-    //         .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-    //         .then(cats => {
-    //             this.context.setCats(cats)
-    //         });
-    //     // fetch people and store them in state
-    //     fetch(`${config.API_BASE_URL}/people`)
-    //         .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-    //         .then(people => {
-    //             this.context.setPeople(people)
-    //         });
+        // fetch cats and store them in state
+        fetch(`${config.API_BASE_URL}/pets/api/getallcats`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(cats => {
+                this.context.setCats(cats)
+            });
+        // fetch people and store them in state
+        fetch(`${config.API_BASE_URL}/people`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(people => {
+                this.context.setPeople(people)
+            });
 
-    //     // fetch next cat in line
-    //     fetch(`${config.API_BASE_URL}/pets/api/nextcat`)
-    //         .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-    //         .then(nextCat => {
-    //             this.context.setNextCat(nextCat)
-    //         })
+        // fetch next cat in line
+        fetch(`${config.API_BASE_URL}/pets/api/nextcat`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(nextCat => {
+                this.context.setNextCat(nextCat)
+            })
 
-    //     // fetch next dog in line
-    //     fetch(`${config.API_BASE_URL}/pets/api/nextdog`)
-    //         .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-    //         .then(nextDog => {
-    //             this.context.setNextDog(nextDog)
-    //         })
-    // }
-
-
-
-    // adoptCatNow = () => {
-    //     fetch(`http://localhost:8000/pets/api/removecat`, {
-    //         method: 'delete'
-    //     }).then(res => res.json())
-    //         .then(cats => this.context.setCats(cats));
-
-    //     fetch(`http://localhost:8000/people`, {
-    //         method: 'delete'
-    //     }).then(res => res.json());
+        // fetch next dog in line
+        fetch(`${config.API_BASE_URL}/pets/api/nextdog`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(nextDog => {
+                this.context.setNextDog(nextDog)
+            })
+    }
 
 
-    //     this.setState({
-    //         adopted: true,
-    //         type: 'cat',
-    //     })
-    // }
 
-    // adoptDogNow = () => {
-    //     fetch(`http://localhost:8000/pets/api/removedog`, {
-    //         method: 'delete'
-    //     }).then(res => res.json())
-    //         .then(dogs => this.context.setDogs(dogs));
+    adoptCatNow = () => {
+        fetch(`http://localhost:8000/pets/api/removecat`, {
+            method: 'delete'
+        }).then(res => res.json())
+            .then(cats => this.context.setCats(cats));
 
-    //     fetch(`http://localhost:8000/people`, {
-    //         method: 'delete'
-    //     }).then(res => res.json())
+        fetch(`http://localhost:8000/people`, {
+            method: 'delete'
+        }).then(res => res.json());
 
-    //     this.setState({
-    //         adopted: true,
-    //         type: 'dog'
-    //     })
-    // }
+
+        this.setState({
+            adopted: true,
+            type: 'cat',
+        })
+    }
+
+    adoptDogNow = () => {
+        fetch(`http://localhost:8000/pets/api/removedog`, {
+            method: 'delete'
+        }).then(res => res.json())
+            .then(dogs => this.context.setDogs(dogs));
+
+        fetch(`http://localhost:8000/people`, {
+            method: 'delete'
+        }).then(res => res.json())
+
+        this.setState({
+            adopted: true,
+            type: 'dog'
+        })
+    }
 
     // startTimer = () => {
     //     console.log('timer started');

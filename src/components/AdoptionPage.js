@@ -4,6 +4,7 @@ import NextCat from './NextCat';
 import NextDog from './NextDog';
 import PersonQueue from './PersonQueue';
 import ConfirmationPage from './ConfirmationPage';
+import config from '../config';
 
 class AdoptionPage extends React.Component {
     state = {
@@ -20,8 +21,8 @@ class AdoptionPage extends React.Component {
     // on Componenet mount make all API get requests and store tehm in state
     componentDidMount() {
         // fetch dogs and store them in state
-        fetch(`http://localhost:8000/pets/api/getalldogs`)
-            .then(res => res.json())
+        fetch(`${config.API_BASE_URL}/pets/api/getalldogs`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(dogs => {
                 this.setState({
                     dogs
@@ -29,16 +30,16 @@ class AdoptionPage extends React.Component {
             });
 
         // fetch cats and store them in state
-        fetch(`http://localhost:8000/pets/api/getallcats`)
-            .then(res => res.json())
+        fetch(`${config.API_BASE_URL}/pets/api/getallcats`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(cats => {
                 this.setState({
                     cats
                 })
             });
         // fetch people and store them in state
-        fetch(`http://localhost:8000/people`)
-            .then(res => res.json())
+        fetch(`${config.API_BASE_URL}/people`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
                 this.setState({
                     people
@@ -46,8 +47,8 @@ class AdoptionPage extends React.Component {
             });
 
         // fetch next cat in line
-        fetch(`http://localhost:8000/pets/api/nextcat`)
-            .then(res => res.json())
+        fetch(`${config.API_BASE_URL}/pets/api/nextcat`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(nextCat => {
                 this.setState({
                     nextCat
@@ -55,14 +56,15 @@ class AdoptionPage extends React.Component {
             })
 
         // fetch next dog in line
-        fetch(`http://localhost:8000/pets/api/nextdog`)
-            .then(res => res.json())
+        fetch(`${config.API_BASE_URL}/pets/api/nextdog`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(nextDog => {
                 this.setState({
                     nextDog
                 })
             })
     }
+
 
     addCurrentUser = (name) => {
         const people = { ...this.state.people };
@@ -77,14 +79,22 @@ class AdoptionPage extends React.Component {
         fetch(`http://localhost:8000/pets/api/removecat`, {
             method: 'delete'
         })
-            .then(res => res.json())
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+
+        fetch(`http://localhost:8000/people`, {
+            method: 'delete'
+        })
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
 
         const catList = { ...this.state.cats };
+        const people = { ...this.state.people }
         Object.keys(catList).shift();
-        console.log('catList', catList)
+        Object.keys(people).shift();
+
         this.setState({
             adopted: true,
-            type: 'cat'
+            type: 'cat',
+            people
         })
     }
 
@@ -94,14 +104,36 @@ class AdoptionPage extends React.Component {
         })
             .then(res => res.json())
 
+        fetch(`http://localhost:8000/people`, {
+            method: 'delete'
+        })
+            .then(res => res.json())
+
         const dogList = { ...this.state.dogs };
+        const people = { ...this.state.people }
         Object.keys(dogList).shift();
-        console.log('dogList', dogList)
+        Object.keys(people).shift();
+
         this.setState({
             adopted: true,
             type: 'dog'
         })
     }
+
+    startTimer = () => {
+        console.log('timer started');
+        const adoptionTimer = setInterval(() => {
+            this.adoptCatNow();
+        }, 5000);
+
+        const stopTimer = setInterval(() => {
+            if (this.state.people === this.state.currentUser) {
+                console.log('stop timer started')
+                clearInterval(adoptionTimer);
+                clearInterval(stopTimer);
+            }
+        });
+    };
 
 
     render() {
@@ -117,7 +149,9 @@ class AdoptionPage extends React.Component {
                         <hr />
                         <PersonQueue
                             addCurrentUser={this.addCurrentUser}
-                            people={this.state.people} />
+                            people={this.state.people}
+                            currentUser={this.state.currentUser}
+                            startTimer={this.startTimer} />
                         <div className='pets-and-queue'>
                             <NextCat
                                 nextCat={this.state.nextCat}
@@ -150,7 +184,8 @@ class AdoptionPage extends React.Component {
                     <PersonQueue
                         addCurrentUser={this.addCurrentUser}
                         people={this.state.people}
-                        currentUser={this.state.currentUser} />
+                        currentUser={this.state.currentUser}
+                        startTimer={this.startTimer} />
                 </div>
             )
         } else {
@@ -162,7 +197,8 @@ class AdoptionPage extends React.Component {
                     <PersonQueue
                         addCurrentUser={this.addCurrentUser}
                         people={this.state.people}
-                        currentUser={this.state.currentUser} />
+                        currentUser={this.state.currentUser}
+                        startTimer={this.startTimer} />
                 </div>
             )
         }

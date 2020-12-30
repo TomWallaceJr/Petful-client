@@ -13,7 +13,7 @@ class AdoptionPage extends React.Component {
     state = {
         name: '',
         peopleList: [],
-        firstPerson: false,
+        nextUp: false,
         adopted: false
     }
 
@@ -24,20 +24,23 @@ class AdoptionPage extends React.Component {
         fetch(`${config.API_BASE_URL}/pets/api/getalldogs`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(dogs => {
-                this.context.setDogs(dogs)
+                this.context.setDogs(dogs);
             });
 
         // fetch cats and store them in state
         fetch(`${config.API_BASE_URL}/pets/api/getallcats`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(cats => {
-                this.context.setCats(cats)
+                this.context.setCats(cats);
             });
         // fetch people and store them in state
         fetch(`${config.API_BASE_URL}/people`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
-                this.context.setPeople(people)
+                this.context.setPeople(people);
+                this.setState({
+                    peopleList: people
+                })
             });
 
         // fetch next cat in line
@@ -106,11 +109,21 @@ class AdoptionPage extends React.Component {
     // };
 
 
+
+    // In my Conditional Rendering I want IF the current user is the next in line to render nextCat
+    // and NextDog components
+
     render() {
         let currentUser = this.context.currentUser;
+        let nextUser = this.state.peopleList[0];
+        console.log('next up -', nextUser, 'currentUser -', currentUser)
+        if (this.context.currentUser === this.state.peopleList[0]) {
+            this.setState({
+                nextUp: true
+            })
+        }
 
-
-        if (currentUser) {
+        if (this.state.nextUp) {
             if (!this.state.adopted) {
                 return (
                     <div className='adoption-page'>
@@ -132,7 +145,7 @@ class AdoptionPage extends React.Component {
                 )
             }
 
-        } else if (currentUser) {
+        } else if (this.state.nextUp) {
             return (
                 <div className='adoption-page'>
                     <Header />

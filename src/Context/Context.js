@@ -5,10 +5,11 @@ const PetfulContext = React.createContext({
     cats: {},
     nextDog: {},
     nextCat: {},
-    people: {},
+    people: [],
     currentUser: '',
     setDogs: () => { },
     setCats: () => { },
+    setCurrentUser: () => { },
     setNextCat: () => { },
     setNextDog: () => { },
     setPeople: () => { },
@@ -21,7 +22,7 @@ export class PetfulProvider extends React.Component {
         dogs: {},
         cats: {},
         people: [],
-        currentUser: [],
+        currentUser: '',
         nextCat: {},
         nextDog: {}
     };
@@ -33,7 +34,9 @@ export class PetfulProvider extends React.Component {
     };
 
     setCurrentUser = currentUser => {
-        this.setState({ currentUser })
+        this.setState({
+            currentUser
+        })
     }
 
     setCats = (cats) => {
@@ -64,6 +67,9 @@ export class PetfulProvider extends React.Component {
             dogs: this.state.dogs,
             cats: this.state.cats,
             people: this.state.people,
+            currentUser: this.state.currentUser,
+            nextCat: this.state.nextCat,
+            nextDog: this.state.nextDog,
             setCats: this.setCats,
             setDogs: this.setDogs,
             setPeople: this.setPeople,

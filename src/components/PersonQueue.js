@@ -9,14 +9,15 @@ class PersonQueue extends React.Component {
     state = {
         name: '',
         currentUser: '',
+        nextUp: false,
         nameList: [],
         signedUp: false
     }
 
-    setNameList = () => {
-        this.state.nameList = this.context.people;
-        console.log(this.state.nameList)
-    }
+    // setNameList = () => {
+    //     this.state.nameList = this.context.people;
+    //     console.log(this.state.nameList)
+    // }
 
     handleNameChange = e => {
         this.setState({
@@ -40,11 +41,15 @@ class PersonQueue extends React.Component {
         }).then(res => res.json())
             .then(res => {
                 this.context.setPeople(res);
+                this.setState({
+                    signedUp: true,
+                    currentUser: name,
+                    nameList: res
+                })
             })
-            .then(res => this.setState({
-                signedUp: true,
-                currentUser: name
-            }))
+            .then(res => {
+                this.context.setCurrentUser(name)
+            })
             .catch(error => {
                 alert(`Something went wrong! ${error.message}`)
             })
@@ -80,7 +85,7 @@ class PersonQueue extends React.Component {
 
                         <button
                             className='line-button'
-                        // disabled={!this.state.signedUp}
+                            disabled={this.state.signedUp}
                         >Get In Line!</button>
                     </form>
                 </div>

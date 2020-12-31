@@ -10,8 +10,8 @@ class PersonQueue extends React.Component {
         name: '',
         currentUser: '',
         nextUp: false,
-        nameList: [],
-        signedUp: false
+        signedUp: false,
+        intervalId: 0
     }
 
 
@@ -36,22 +36,43 @@ class PersonQueue extends React.Component {
             })
         }).then(res => res.json())
             .then(res => {
+                this.context.setCurrentUser(name)
                 this.context.setPeople(res);
                 this.setState({
                     signedUp: true,
                     currentUser: name,
-                    nameList: res
                 })
-            })
-            .then(res => {
-                this.context.setCurrentUser(name)
             })
             .catch(error => {
                 alert(`Something went wrong! ${error.message}`)
             })
         e.currentTarget.reset();
+
+        // starts demo adoption timer
+        this.startTimer();
     }
 
+    startTimer = () => {
+        // let adding = false;
+        // let newUsers = ['Jim', 'Bob', 'Carol', 'Lance', 'Joe'];
+
+        this.state.intervalId = setInterval(() => {
+            if (this.context.currentuser === this.props.peopleList[0]) {
+                console.log('returning now');
+                this.setState({
+                    nextUp: true
+                });
+                return clearInterval(this.state.intervalId);
+            } else if (this.context.currentUser !== this.props.peopleList[0]) {
+                console.log('inside first if');
+                this.props.adoptCatNow();
+            }
+        }, 5000)
+    };
+
+    componentWillUnmount() {
+        return clearInterval(this.state.intervalId);
+    }
 
     render() {
 

@@ -13,9 +13,9 @@ class AdoptionPage extends React.Component {
     state = {
         name: '',
         peopleList: [],
-        nextUp: true,
+        signedUp: false,
+        nextUp: false,
         adopted: false,
-        type: ''
     }
 
 
@@ -68,39 +68,52 @@ class AdoptionPage extends React.Component {
         }).then(res => res.json())
             .then(cats => this.context.setCats(cats));
 
-        this.setState({
-            adopted: true,
-            type: 'cat',
-        })
-    }
+        // need to fetch updated list of people because top one got dequeud
+        fetch(`${config.API_BASE_URL}/people`)
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(people => {
+                this.context.setPeople(people);
+                this.setState({
+                    peopleList: people
+                })
+            });
+        // set adopted in state to true will trigger rerender and dirsect to confirmation component
+        // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
+        if (this.context.currentUser === this.state.peopleList[0]) {
+            this.setState({
+                adopted: true,
+            });
+        };
+    };
 
     adoptDogNow = () => {
         this.context.setAdoptedPet(this.context.nextDog);
-        fetch(`http://localhost:8000/pets/api/removedog`, {
+        fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
             method: 'delete'
         }).then(res => res.json())
             .then(dogs => this.context.setDogs(dogs));
 
-        this.setState({
-            adopted: true,
-            type: 'dog'
-        })
+        // set adopted in state to true will trigger rerender and dirsect to confirmation component
+        // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
+        if (this.state.name === this.state.peopleList[0]) {
+            this.setState({
+                adopted: true,
+            });
+        };
+    };
+
+    autoAdopt = () => {
+        if (this.context.currentUser !== this.state.peopleList[0]) {
+            console.log('currentUser -', this.context.currentUser, 'nextUser -', this.state.peopleList[0])
+            this.adoptCatNow();
+        }
     }
 
-    // startTimer = () => {
-    //     console.log('timer started');
-    //     const adoptionTimer = setInterval(() => {
-    //         this.adoptCatNow();
-    //     }, 5000);
-
-    //     const stopTimer = setInterval(() => {
-    //         if (this.state.people === this.state.currentUser) {
-    //             console.log('stop timer started')
-    //             clearInterval(adoptionTimer);
-    //             clearInterval(stopTimer);
-    //         }
-    //     });
-    // };
+    setNextUp = () => {
+        this.setState({
+            nextUp: true
+        })
+    }
 
 
 
@@ -108,14 +121,6 @@ class AdoptionPage extends React.Component {
     // and NextDog components
 
     render() {
-        let currentUser = this.context.currentUser;
-        let nextUser = this.state.peopleList[0];
-        console.log('next up -', nextUser, 'currentUser -', currentUser)
-        if (this.context.currentUser === this.state.peopleList[0]) {
-            this.setState({
-                nextUp: true
-            })
-        }
 
         if (this.state.nextUp) {
             if (!this.state.adopted) {
@@ -123,7 +128,13 @@ class AdoptionPage extends React.Component {
                     <div className='adoption-page'>
                         <Header />
                         <hr />
-                        <PersonQueue />
+                        <PersonQueue
+                            startTimer={this.startTimer}
+                            adoptCatNow={this.adoptCatNow}
+                            adoptDogNow={this.adoptDogNow}
+                            peopleList={this.state.peopleList}
+                            setNextUp={this.setNextUp}
+                        />
                         <div className='pets-and-queue'>
                             <NextCat adoptCatNow={this.adoptCatNow} />
                             <NextDog adoptDogNow={this.adoptDogNow} />
@@ -134,18 +145,23 @@ class AdoptionPage extends React.Component {
             else if (this.state.adopted) {
                 return (
                     <div className='confirmation-page'>
-                        <ConfirmationPage type={this.state.type} />
+                        <ConfirmationPage />
                     </div>
                 )
             }
 
-        } else if (this.state.nextUp) {
+        } else if (this.context.currentUser) {
             return (
                 <div className='adoption-page'>
                     <Header />
                     <hr />
-                    <h3>You are in line {currentUser} !! Please wait....</h3>
-                    <PersonQueue />
+                    <h3>You are in line {this.context.currentUser} !! Please wait....</h3>
+                    <PersonQueue
+                        startTimer={this.startTimer}
+                        adoptCatNow={this.adoptCatNow}
+                        adoptDogNow={this.adoptDogNow}
+                        peopleList={this.state.peopleList}
+                        setNextUp={this.setNextUp} />
                 </div>
             )
         } else {
@@ -154,7 +170,12 @@ class AdoptionPage extends React.Component {
                     <Header />
                     <hr />
                     <h3>Enter your name to get in line now!</h3>
-                    <PersonQueue />
+                    <PersonQueue
+                        startTimer={this.startTimer}
+                        adoptCatNow={this.adoptCatNow}
+                        adoptDogNow={this.adoptDogNow}
+                        peopleList={this.state.peopleList}
+                        setNextUp={this.setNextUp} />
                 </div>
             )
         }

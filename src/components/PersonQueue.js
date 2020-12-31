@@ -14,10 +14,6 @@ class PersonQueue extends React.Component {
         signedUp: false
     }
 
-    // setNameList = () => {
-    //     this.state.nameList = this.context.people;
-    //     console.log(this.state.nameList)
-    // }
 
     handleNameChange = e => {
         this.setState({

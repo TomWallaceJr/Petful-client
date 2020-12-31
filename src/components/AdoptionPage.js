@@ -13,8 +13,9 @@ class AdoptionPage extends React.Component {
     state = {
         name: '',
         peopleList: [],
-        nextUp: false,
-        adopted: false
+        nextUp: true,
+        adopted: false,
+        type: ''
     }
 
 
@@ -61,15 +62,11 @@ class AdoptionPage extends React.Component {
 
 
     adoptCatNow = () => {
-        fetch(`http://localhost:8000/pets/api/removecat`, {
+        this.context.setAdoptedPet(this.context.nextCat);
+        fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
             method: 'delete'
         }).then(res => res.json())
             .then(cats => this.context.setCats(cats));
-
-        fetch(`http://localhost:8000/people`, {
-            method: 'delete'
-        }).then(res => res.json());
-
 
         this.setState({
             adopted: true,
@@ -78,14 +75,11 @@ class AdoptionPage extends React.Component {
     }
 
     adoptDogNow = () => {
+        this.context.setAdoptedPet(this.context.nextDog);
         fetch(`http://localhost:8000/pets/api/removedog`, {
             method: 'delete'
         }).then(res => res.json())
             .then(dogs => this.context.setDogs(dogs));
-
-        fetch(`http://localhost:8000/people`, {
-            method: 'delete'
-        }).then(res => res.json())
 
         this.setState({
             adopted: true,
@@ -140,7 +134,7 @@ class AdoptionPage extends React.Component {
             else if (this.state.adopted) {
                 return (
                     <div className='confirmation-page'>
-                        <ConfirmationPage />
+                        <ConfirmationPage type={this.state.type} />
                     </div>
                 )
             }

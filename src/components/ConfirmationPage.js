@@ -1,39 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PetfulContext from '../Context/Context';
 
 class ConfirmationPage extends React.Component {
+    static contextType = PetfulContext;
 
     render() {
-        const cats = this.props.cats;
-        const dogs = this.props.dogs;
-        const user = this.props.currentUser;
-        const type = this.props.type;
+        const adoptedPet = this.context.adoptedPet;
+        const user = this.context.currentUser;
 
-        if (type === 'cat') {
-            return (
-                <div className='confirmation-page'>
-                    <h1>Congrats {user}! You adopoted {cats[0].name}!</h1>
-                    <img src={cats[0].imageURL} alt={cats[0].description}></img>
-                    <Link to='/'><button>Back to Home!</button></Link>
-                </div>
-            )
-        }
-
-        if (type === 'dog') {
-            return (
-                <div className='confirmation-page'>
-                    <h1>Congrats {user}! You adopoted {dogs[0].name}!</h1>
-                    <img src={dogs[0].imageURL} alt={dogs[0].description}></img>
-                    <Link to='/'><button>Back to Home!</button></Link>
-                </div>
-            )
-        }
-
-        else {
-            return (
-                <h1>Something Went Wrong! Please refresh!</h1>
-            )
-        }
+        return (
+            <div className='confirmation-page'>
+                <h1>Congrats {user}! You adopoted {adoptedPet.name}!</h1>
+                <img src={adoptedPet.imageURL} alt={adoptedPet.description}></img>
+                <Link to='/'><button>Back to Home!</button></Link>
+            </div>
+        )
     }
 }
 export default ConfirmationPage

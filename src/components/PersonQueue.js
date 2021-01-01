@@ -1,5 +1,4 @@
 import React from 'react';
-import Person from './Person';
 import PetfulContext from '../Context/Context';
 import config from '../config';
 
@@ -48,20 +47,17 @@ class PersonQueue extends React.Component {
             })
         e.currentTarget.reset();
 
-        // starts demo adoption timer
+        //starts demo adoption timer
         this.startTimer();
+        this.testFunc();
     }
 
     startTimer = () => {
-        // let adding = false;
-        // let newUsers = ['Jim', 'Bob', 'Carol', 'Lance', 'Joe'];
 
         this.state.intervalId = setInterval(() => {
             if (this.context.currentuser === this.props.peopleList[0]) {
-                console.log('returning now');
-                this.setState({
-                    nextUp: true
-                });
+                console.log('returning now', this.context.currentUser, this.props.peopleList[0]);
+                this.props.setNextUp();
                 return clearInterval(this.state.intervalId);
             } else if (this.context.currentUser !== this.props.peopleList[0]) {
                 console.log('inside first if');
@@ -78,6 +74,7 @@ class PersonQueue extends React.Component {
 
         return (
             <>
+                {console.log('personQ rendered')}
                 <div className='person-queue'>
                     <h3>Next Up</h3>
                     <ul>

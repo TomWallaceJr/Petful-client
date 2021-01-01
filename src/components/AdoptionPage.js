@@ -64,19 +64,29 @@ class AdoptionPage extends React.Component {
     adoptCatNow = () => {
         this.context.setAdoptedPet(this.context.nextCat);
         fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
-            method: 'delete'
-        }).then(res => res.json())
-            .then(cats => this.context.setCats(cats));
+            method: 'delete',
+            headers: {
+                'content-type': 'application/json',
+            },
+        })
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(cats => {
+                this.context.setCats(cats);
+            });
 
-        // need to fetch updated list of people because top one got dequeud
-        fetch(`${config.API_BASE_URL}/people`)
+        // dequeue top person from list
+        // THIS DEL REQUEST NOT WORKING BUT API ENDPOINT FUCNTIONS FINE ON POSTMAN
+        fetch(`${config.API_BASE_URL}/people`, {
+            method: 'delete',
+            headers: {
+                'content-type': 'application/json',
+            },
+        })
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
                 this.context.setPeople(people);
-                this.setState({
-                    peopleList: people
-                })
             });
+
         // set adopted in state to true will trigger rerender and dirsect to confirmation component
         // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
         if (this.context.currentUser === this.state.peopleList[0]) {
@@ -116,12 +126,25 @@ class AdoptionPage extends React.Component {
     }
 
 
+    testFunc = () => {
+        fetch(`http://localhost:8000/people`, {
+            method: 'delete',
+            headers: {
+                'content-type': 'application/json',
+            },
+        })
+            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+            .then(people => {
+                this.context.setPeople(people);
+            });
+    }
+
 
     // In my Conditional Rendering I want IF the current user is the next in line to render nextCat
     // and NextDog components
 
     render() {
-
+        console.log('adoption page render');
         if (this.state.nextUp) {
             if (!this.state.adopted) {
                 return (
@@ -134,6 +157,7 @@ class AdoptionPage extends React.Component {
                             adoptDogNow={this.adoptDogNow}
                             peopleList={this.state.peopleList}
                             setNextUp={this.setNextUp}
+                            testFunc={this.testFunc}
                         />
                         <div className='pets-and-queue'>
                             <NextCat adoptCatNow={this.adoptCatNow} />
@@ -161,7 +185,8 @@ class AdoptionPage extends React.Component {
                         adoptCatNow={this.adoptCatNow}
                         adoptDogNow={this.adoptDogNow}
                         peopleList={this.state.peopleList}
-                        setNextUp={this.setNextUp} />
+                        setNextUp={this.setNextUp}
+                        testFunc={this.testFunc} />
                 </div>
             )
         } else {
@@ -175,7 +200,8 @@ class AdoptionPage extends React.Component {
                         adoptCatNow={this.adoptCatNow}
                         adoptDogNow={this.adoptDogNow}
                         peopleList={this.state.peopleList}
-                        setNextUp={this.setNextUp} />
+                        setNextUp={this.setNextUp}
+                        testFunc={this.testFunc} />
                 </div>
             )
         }

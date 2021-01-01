@@ -5,7 +5,7 @@ class NextDog extends React.Component {
     static contextType = PetfulContext;
 
     render() {
-        const nextDog = this.context.nextDog;
+        const nextDog = this.context.dogs[0];
         const { age, breed, imageDescription, imageURL, name, sex, story } = nextDog;
 
         if (!name) {

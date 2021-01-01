@@ -31,7 +31,7 @@ export class PetfulProvider extends React.Component {
 
     setPeople = names => {
         this.setState({
-            people: names
+            people: [names]
         });
     };
 

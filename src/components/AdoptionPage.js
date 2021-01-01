@@ -15,12 +15,14 @@ class AdoptionPage extends React.Component {
         peopleList: [],
         signedUp: false,
         nextUp: false,
+        realPerson: false,
         adopted: false,
     }
 
 
     // on Componenet mount make all API get requests and store tehm in state
     componentDidMount() {
+        console.log('Component did Mount');
         // fetch dogs and store them in state
         fetch(`${config.API_BASE_URL}/pets/api/getalldogs`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
@@ -44,38 +46,51 @@ class AdoptionPage extends React.Component {
                 })
             });
 
-        // fetch next cat in line
-        fetch(`${config.API_BASE_URL}/pets/api/nextcat`)
-            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-            .then(nextCat => {
-                this.context.setNextCat(nextCat)
-            })
+        // **** MAY NOT NEED NEXTPET ENDPOINTS... FOUND WAY TO WORK WITH ENTIRE OBJECTS****
+        // // fetch next cat in line
+        // fetch(`${config.API_BASE_URL}/pets/api/nextcat`)
+        //     .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+        //     .then(nextCat => {
+        //         this.context.setNextCat(nextCat)
+        //     })
 
-        // fetch next dog in line
-        fetch(`${config.API_BASE_URL}/pets/api/nextdog`)
-            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-            .then(nextDog => {
-                this.context.setNextDog(nextDog)
-            })
+        // // fetch next dog in line
+        // fetch(`${config.API_BASE_URL}/pets/api/nextdog`)
+        //     .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+        //     .then(nextDog => {
+        //         this.context.setNextDog(nextDog)
+        //     })
     }
 
 
 
     adoptCatNow = () => {
-        this.context.setAdoptedPet(this.context.nextCat);
-        fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
-            method: 'delete',
-            headers: {
-                'content-type': 'application/json',
-            },
-        })
-            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-            .then(cats => {
-                this.context.setCats(cats);
+        console.log('AdoptCatNow func executed');
+        // if real person set adoptedCat to nextCat set state to true and dont bother removing cat from queue
+        // set adopted in state to true will trigger rerender and dirsect to confirmation component
+        // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
+        if (this.state.realPerson) {
+            this.context.setAdoptedPet(this.context.cats[0]);
+            this.setState({
+                adopted: true,
             });
-
+        }
+        // else if part of auto rotation remove cat 
+        else {
+            fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
+                method: 'delete',
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+                .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+                .then(cats => {
+                    this.context.setCats(cats);
+                    this.context.setAdoptedPet(this.context.cats[0]);
+                });
+        }
         // dequeue top person from list
-        // THIS DEL REQUEST NOT WORKING BUT API ENDPOINT FUCNTIONS FINE ON POSTMAN
+        // needs to be done regardless of human or counter
         fetch(`${config.API_BASE_URL}/people`, {
             method: 'delete',
             headers: {
@@ -85,49 +100,40 @@ class AdoptionPage extends React.Component {
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
                 this.context.setPeople(people);
+                this.setState({
+                    peopleList: people
+                });
             });
-
-        // set adopted in state to true will trigger rerender and dirsect to confirmation component
-        // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
-        if (this.context.currentUser === this.state.peopleList[0]) {
-            this.setState({
-                adopted: true,
-            });
-        };
     };
 
     adoptDogNow = () => {
-        this.context.setAdoptedPet(this.context.nextDog);
-        fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
-            method: 'delete'
-        }).then(res => res.json())
-            .then(dogs => this.context.setDogs(dogs));
-
+        console.log('AdoptDogNow func executed');
+        // if real person set adoptedCat to nextCat set state to true and dont bother removing cat from queue
         // set adopted in state to true will trigger rerender and dirsect to confirmation component
         // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
-        if (this.state.name === this.state.peopleList[0]) {
+        if (this.state.realPerson) {
+            this.context.setAdoptedPet(this.context.dogs[0]);
             this.setState({
                 adopted: true,
             });
-        };
-    };
-
-    autoAdopt = () => {
-        if (this.context.currentUser !== this.state.peopleList[0]) {
-            console.log('currentUser -', this.context.currentUser, 'nextUser -', this.state.peopleList[0])
-            this.adoptCatNow();
         }
-    }
-
-    setNextUp = () => {
-        this.setState({
-            nextUp: true
-        })
-    }
-
-
-    testFunc = () => {
-        fetch(`http://localhost:8000/people`, {
+        // else if part of auto rotation remove dog 
+        else {
+            fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
+                method: 'delete',
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+                .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+                .then(dogs => {
+                    this.context.setDogs(dogs);
+                    this.context.setAdoptedPet(this.context.dogs[0]);
+                });
+        }
+        // dequeue top person from list
+        // needs to be done regardless of human or counter
+        fetch(`${config.API_BASE_URL}/people`, {
             method: 'delete',
             headers: {
                 'content-type': 'application/json',
@@ -136,15 +142,31 @@ class AdoptionPage extends React.Component {
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
                 this.context.setPeople(people);
+                this.setState({
+                    peopleList: people
+                });
             });
-    }
+    };
+
+    // sets nextUp to true so pet components render
+    // also need to set realPerson because we use adoptCat/adoptDog funcs in iterater
+    setNextUp = () => {
+        console.log('setNextUp func executed');
+        this.setState({
+            nextUp: true,
+            realPerson: true
+        });
+    };
+
+
+
 
 
     // In my Conditional Rendering I want IF the current user is the next in line to render nextCat
     // and NextDog components
 
     render() {
-        console.log('adoption page render');
+        // console.log('adoption component render');
         if (this.state.nextUp) {
             if (!this.state.adopted) {
                 return (

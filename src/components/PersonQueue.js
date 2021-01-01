@@ -49,18 +49,17 @@ class PersonQueue extends React.Component {
 
         //starts demo adoption timer
         this.startTimer();
-        this.testFunc();
     }
 
     startTimer = () => {
 
         this.state.intervalId = setInterval(() => {
-            if (this.context.currentuser === this.props.peopleList[0]) {
-                console.log('returning now', this.context.currentUser, this.props.peopleList[0]);
+            if (this.context.currentuser === this.props.peopleList[1]) {
+                console.log('returning now', this.context.currentUser, this.props.peopleList[1]);
                 this.props.setNextUp();
                 return clearInterval(this.state.intervalId);
             } else if (this.context.currentUser !== this.props.peopleList[0]) {
-                console.log('inside first if');
+                console.log('Increment - one cat adopted');
                 this.props.adoptCatNow();
             }
         }, 5000)
@@ -74,7 +73,6 @@ class PersonQueue extends React.Component {
 
         return (
             <>
-                {console.log('personQ rendered')}
                 <div className='person-queue'>
                     <h3>Next Up</h3>
                     <ul>

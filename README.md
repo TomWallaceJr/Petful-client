@@ -15,3 +15,5 @@ Server Side - https://github.com/TomWallaceJr/Petful-server
 
 # Live link 
 Vercel - https://petful-client-template.tomwallacejr.vercel.app/adopt
+heroku git url = https://git.heroku.com/powerful-forest-28347.git
+

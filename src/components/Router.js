@@ -17,6 +17,6 @@ const Router = () => (
             </Switch>
         </BrowserRouter>
     </PetfulProvider>
-)
+);
 
 export default Router;

@@ -11,7 +11,7 @@ class PersonQueue extends React.Component {
         nextUp: false,
         signedUp: false,
         intervalId: 0
-    }
+    };
 
 
     handleNameChange = e => {
@@ -23,8 +23,6 @@ class PersonQueue extends React.Component {
     submitForm = (e) => {
         e.preventDefault();
         const name = this.state.name;
-
-
         fetch(`${config.API_BASE_URL}/people`, {
             method: 'post',
             headers: {
@@ -44,21 +42,19 @@ class PersonQueue extends React.Component {
             })
             .catch(error => {
                 alert(`Something went wrong! ${error.message}`)
-            })
+            });
         e.currentTarget.reset();
 
         //starts demo adoption timer
         this.startTimer();
-    }
+    };
 
     startTimer = () => {
         this.state.intervalId = setInterval(() => {
             if (this.context.currentuser === this.props.peopleList[1]) {
-                console.log('returning now', this.context.currentUser, this.props.peopleList[1]);
                 this.props.setNextUp();
                 return clearInterval(this.state.intervalId);
             } else if (this.context.currentUser !== this.props.peopleList[0]) {
-                console.log('Increment - one cat adopted');
                 this.props.adoptCatNow();
             }
         }, 5000)
@@ -66,10 +62,9 @@ class PersonQueue extends React.Component {
 
     componentWillUnmount() {
         return clearInterval(this.state.intervalId);
-    }
+    };
 
     render() {
-
         return (
             <>
                 <div className='person-queue'>
@@ -101,8 +96,7 @@ class PersonQueue extends React.Component {
                 </div>
             </>
         )
-    }
-
-}
+    };
+};
 
 export default PersonQueue;

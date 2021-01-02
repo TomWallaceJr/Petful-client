@@ -13,8 +13,8 @@ class NextDog extends React.Component {
                 <div className='next-pet-container'>
                     <label>All of our Dogs have been adopted! Try again another day!</label>
                 </div>
-            )
-        }
+            );
+        };
         return (
             <div className='next-pet-container'>
                 <h2>Meet {name}!</h2>
@@ -27,8 +27,8 @@ class NextDog extends React.Component {
                     Adopt Now
                     </button>
             </div>
-        )
-    }
-}
+        );
+    };
+};
 
 export default NextDog;

@@ -93,5 +93,5 @@ export class PetfulProvider extends React.Component {
                 {this.props.children}
             </PetfulContext.Provider>
         );
-    }
-}
+    };
+};

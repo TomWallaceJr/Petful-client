@@ -22,7 +22,6 @@ class AdoptionPage extends React.Component {
 
     // on Componenet mount make all API get requests and store tehm in state
     componentDidMount() {
-        console.log('Component did Mount');
         // fetch dogs and store them in state
         fetch(`${config.API_BASE_URL}/pets/api/getalldogs`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
@@ -91,7 +90,6 @@ class AdoptionPage extends React.Component {
     };
 
     adoptDogNow = () => {
-        console.log('AdoptDogNow func executed');
         // if real person set adoptedCat to nextCat set state to true and dont bother removing cat from queue
         // set adopted in state to true will trigger rerender and dirsect to confirmation component
         // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
@@ -135,7 +133,6 @@ class AdoptionPage extends React.Component {
     // sets nextUp to true so pet components render
     // also need to set realPerson because we use adoptCat/adoptDog funcs in iterater
     setNextUp = () => {
-        console.log('setNextUp func executed');
         this.setState({
             nextUp: true,
             realPerson: true
@@ -165,15 +162,15 @@ class AdoptionPage extends React.Component {
                             <NextDog adoptDogNow={this.adoptDogNow} />
                         </div>
                     </div>
-                )
+                );
             }
             else if (this.state.adopted) {
                 return (
                     <div className='confirmation-page'>
                         <ConfirmationPage />
                     </div>
-                )
-            }
+                );
+            };
 
         } else if (this.context.currentUser) {
             return (
@@ -202,10 +199,10 @@ class AdoptionPage extends React.Component {
                         setNextUp={this.setNextUp}
                         testFunc={this.testFunc} />
                 </div>
-            )
-        }
-    }
-}
+            );
+        };
+    };
+};
 
 export default AdoptionPage;
 

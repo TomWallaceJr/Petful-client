@@ -52,7 +52,6 @@ class PersonQueue extends React.Component {
     }
 
     startTimer = () => {
-
         this.state.intervalId = setInterval(() => {
             if (this.context.currentuser === this.props.peopleList[1]) {
                 console.log('returning now', this.context.currentUser, this.props.peopleList[1]);
@@ -74,7 +73,7 @@ class PersonQueue extends React.Component {
         return (
             <>
                 <div className='person-queue'>
-                    <h3>Next Up</h3>
+                    <h3>Waiting In Line</h3>
                     <ul>
                         {this.context.people.map((names) => {
                             return names.map((name, i) => {
@@ -94,7 +93,6 @@ class PersonQueue extends React.Component {
                             placeholder='Your Name'
                             required
                         />
-
                         <button
                             className='line-button'
                             disabled={this.state.signedUp}

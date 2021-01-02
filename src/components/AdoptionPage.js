@@ -45,23 +45,7 @@ class AdoptionPage extends React.Component {
                     peopleList: people
                 })
             });
-
-        // **** MAY NOT NEED NEXTPET ENDPOINTS... FOUND WAY TO WORK WITH ENTIRE OBJECTS****
-        // // fetch next cat in line
-        // fetch(`${config.API_BASE_URL}/pets/api/nextcat`)
-        //     .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-        //     .then(nextCat => {
-        //         this.context.setNextCat(nextCat)
-        //     })
-
-        // // fetch next dog in line
-        // fetch(`${config.API_BASE_URL}/pets/api/nextdog`)
-        //     .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-        //     .then(nextDog => {
-        //         this.context.setNextDog(nextDog)
-        //     })
     }
-
 
 
     adoptCatNow = () => {
@@ -158,10 +142,6 @@ class AdoptionPage extends React.Component {
         });
     };
 
-
-
-
-
     // In my Conditional Rendering I want IF the current user is the next in line to render nextCat
     // and NextDog components
 
@@ -172,7 +152,6 @@ class AdoptionPage extends React.Component {
                 return (
                     <div className='adoption-page'>
                         <Header />
-                        <hr />
                         <PersonQueue
                             startTimer={this.startTimer}
                             adoptCatNow={this.adoptCatNow}
@@ -200,7 +179,6 @@ class AdoptionPage extends React.Component {
             return (
                 <div className='adoption-page'>
                     <Header />
-                    <hr />
                     <h3>You are in line {this.context.currentUser} !! Please wait....</h3>
                     <PersonQueue
                         startTimer={this.startTimer}
@@ -215,7 +193,6 @@ class AdoptionPage extends React.Component {
             return (
                 <div className='adoption-page'>
                     <Header />
-                    <hr />
                     <h3>Enter your name to get in line now!</h3>
                     <PersonQueue
                         startTimer={this.startTimer}

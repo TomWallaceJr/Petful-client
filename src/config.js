@@ -1,3 +1,3 @@
 export default {
-    API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000',
+    API_BASE_URL: 'https://powerful-forest-28347.herokuapp.com',
 };

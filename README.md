@@ -1,6 +1,7 @@
 # Petful Server
 
 Developed by Tom Wallace Jr as a Thinkful project
+Pair - SOLO
 
 This application was built using 
 Front end - Javascript, React JS, and vanilla CSS 
@@ -14,6 +15,6 @@ Client side - https://github.com/TomWallaceJr/Petful-client
 Server Side - https://github.com/TomWallaceJr/Petful-server
 
 # Live link 
-Vercel - https://petful-client-template.tomwallacejr.vercel.app/adopt
+Vercel - https://petful-client-template.tomwallacejr.vercel.app/
 heroku git url = https://git.heroku.com/powerful-forest-28347.git
 

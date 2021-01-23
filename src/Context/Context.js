@@ -38,8 +38,8 @@ export class PetfulProvider extends React.Component {
     setCurrentUser = currentUser => {
         this.setState({
             currentUser
-        })
-    }
+        });
+    };
 
     setCats = (cats) => {
         this.setState({

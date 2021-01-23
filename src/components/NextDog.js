@@ -1,7 +1,7 @@
 import React from 'react';
 import PetfulContext from '../Context/Context';
 
-class NextDog extends React.Component {
+export default class NextDog extends React.Component {
     static contextType = PetfulContext;
 
     render() {
@@ -33,4 +33,3 @@ class NextDog extends React.Component {
     };
 };
 
-export default NextDog;

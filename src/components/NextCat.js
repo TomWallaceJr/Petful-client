@@ -2,7 +2,7 @@ import React from 'react';
 import PetfulContext from '../Context/Context';
 
 
-class NextCat extends React.Component {
+export default class NextCat extends React.Component {
     static contextType = PetfulContext;
 
     render() {
@@ -14,8 +14,8 @@ class NextCat extends React.Component {
                 <div className='next-pet-container'>
                     <label>All of our Cats have been adopted! Try again another day!</label>
                 </div>
-            )
-        }
+            );
+        };
         return (
             <div className='next-pet-container'>
                 <h2>Meet {name}!</h2>
@@ -30,8 +30,7 @@ class NextCat extends React.Component {
                     </button>
                 ) : null}
             </div>
-        )
-    }
-}
+        );
+    };
+};
 
-export default NextCat;

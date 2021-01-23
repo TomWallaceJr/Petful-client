@@ -2,8 +2,7 @@ import React from 'react';
 import Header from './Header';
 
 
-
-class Home extends React.Component {
+export default class Home extends React.Component {
     render() {
         return (
             <div className='home'>
@@ -26,8 +25,7 @@ class Home extends React.Component {
                     <button onClick={() => this.props.history.push('/adopt')}>Adopt Now!</button>
                 </div>
             </div>
-        )
+        );
     };
 };
 
-export default Home;

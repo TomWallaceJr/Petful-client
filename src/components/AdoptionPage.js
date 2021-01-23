@@ -6,7 +6,7 @@ import PersonQueue from './PersonQueue';
 import ConfirmationPage from './ConfirmationPage';
 import config from '../config';
 import PetfulContext from '../Context/Context';
-import AllPets from './AllPets';
+
 
 class AdoptionPage extends React.Component {
     static contextType = PetfulContext;
@@ -19,7 +19,7 @@ class AdoptionPage extends React.Component {
         realPerson: false,
         adopted: false,
         petType: null
-    }
+    };
 
 
     // on Componenet mount make all API get requests and store tehm in state
@@ -44,9 +44,9 @@ class AdoptionPage extends React.Component {
                 this.context.setPeople(people);
                 this.setState({
                     peopleList: people
-                })
+                });
             });
-    }
+    };
 
 
     adoptCatNow = () => {
@@ -60,7 +60,6 @@ class AdoptionPage extends React.Component {
                 petType: 'cat'
             });
         }
-        // else if part of auto rotation remove cat 
         else {
             fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
                 method: 'delete',
@@ -73,7 +72,7 @@ class AdoptionPage extends React.Component {
                     this.context.setCats(cats);
                     this.context.setAdoptedPet(this.context.cats[0]);
                 });
-        }
+        };
         // dequeue top person from list
         // needs to be done regardless of human or counter
         fetch(`${config.API_BASE_URL}/people`, {
@@ -102,7 +101,6 @@ class AdoptionPage extends React.Component {
                 petType: 'dog'
             });
         }
-        // else if part of auto rotation remove dog 
         else {
             fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
                 method: 'delete',
@@ -115,9 +113,7 @@ class AdoptionPage extends React.Component {
                     this.context.setDogs(dogs);
                     this.context.setAdoptedPet(this.context.dogs[0]);
                 });
-        }
-        // dequeue top person from list
-        // needs to be done regardless of human or counter
+        };
         fetch(`${config.API_BASE_URL}/people`, {
             method: 'delete',
             headers: {
@@ -133,8 +129,6 @@ class AdoptionPage extends React.Component {
             });
     };
 
-    // sets nextUp to true so pet components render
-    // also need to set realPerson because we use adoptCat/adoptDog funcs in iterater
     setNextUp = () => {
         this.setState({
             nextUp: true,
@@ -142,11 +136,8 @@ class AdoptionPage extends React.Component {
         });
     };
 
-    // In my Conditional Rendering I want IF the current user is the next in line to render nextCat
-    // and NextDog components
 
     render() {
-        // console.log('adoption component render');
         if (this.state.nextUp) {
             if (!this.state.adopted) {
                 return (
@@ -179,7 +170,6 @@ class AdoptionPage extends React.Component {
                     </div>
                 );
             };
-
         } else if (this.context.currentUser) {
             return (
                 <div className='adoption-page'>

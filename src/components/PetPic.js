@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export default class Fish extends React.Component {
+export default class PetPic extends React.Component {
 
     render() {
         const { imageURL, name, imageDescription } = this.props.details;
@@ -12,7 +12,7 @@ export default class Fish extends React.Component {
                     <img src={imageURL} alt={imageDescription} />
                 </div>
             </li>
-        )
-    }
-}
+        );
+    };
+};
 

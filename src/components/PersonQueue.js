@@ -2,7 +2,7 @@ import React from 'react';
 import PetfulContext from '../Context/Context';
 import config from '../config';
 
-class PersonQueue extends React.Component {
+export default class PersonQueue extends React.Component {
     static contextType = PetfulContext;
 
     state = {
@@ -44,23 +44,19 @@ class PersonQueue extends React.Component {
             });
         e.currentTarget.reset();
 
-        //starts demo adoption timer
         this.startTimer();
     };
 
     startTimer = () => {
-        // declare fake users in array
         const fakeUsers = ['Joe', 'Jim', 'Jake', 'Keri', 'Steve', 'Conner', 'Jill'];
+
         this.state.intervalId = setInterval(() => {
             if (this.context.currentUser === this.props.peopleList[0]) {
-                console.log('setting next up and realperson')
                 this.props.setNextUp();
                 return clearInterval(this.state.intervalId);
             } else if (this.context.currentUser !== this.props.peopleList[0]) {
-                // if less than two users add fake user to queue in context
-                if (this.props.peopleList.length <= 3) {
-                    console.log('adding a person')
-                    // generate random index
+                if (this.props.peopleList.length <= 5) {
+
                     let index = Math.floor(Math.random() * 6) + 1;
                     fetch(`${config.API_BASE_URL}/people`, {
                         method: 'post',
@@ -72,16 +68,17 @@ class PersonQueue extends React.Component {
                         })
                     }).then(res => res.json())
                         .then(res => this.context.setPeople(res));
-                }
-                // generate random num if even adopt cat if odd adoptDog
+                };
+
+                // randomly adopt next cat or dog up in Queue
                 let random = Math.floor(Math.random() * 2);
                 if (random % 2 == 0) {
                     this.props.adoptCatNow();
                 } else {
                     this.props.adoptDogNow();
-                }
-            }
-        }, 5000)
+                };
+            };
+        }, 5000);
     };
 
     componentWillUnmount() {
@@ -119,8 +116,7 @@ class PersonQueue extends React.Component {
                     </form>
                 </div>
             </>
-        )
+        );
     };
 };
 
-export default PersonQueue;

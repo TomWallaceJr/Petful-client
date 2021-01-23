@@ -5,10 +5,9 @@ import config from '../config';
 
 
 
-class ConfirmationPage extends React.Component {
+export default class ConfirmationPage extends React.Component {
     static contextType = PetfulContext;
 
-    // removes adopted cat or dog from backend queue and updates context
     removePet = () => {
         if (this.props.petType === 'cat') {
             fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
@@ -32,9 +31,8 @@ class ConfirmationPage extends React.Component {
                 .then(dogs => {
                     this.context.setDogs(dogs);
                 });
-        }
-    }
-
+        };
+    };
 
     render() {
         const adoptedPet = this.context.adoptedPet;
@@ -48,7 +46,7 @@ class ConfirmationPage extends React.Component {
                     <Link to='/'><button onClick={() => this.removePet()}>Back Home!</button></Link>
                 </div>
             </div>
-        )
+        );
     };
 };
-export default ConfirmationPage
+

@@ -8,19 +8,31 @@ import config from '../config';
 class ConfirmationPage extends React.Component {
     static contextType = PetfulContext;
 
+    // removes adopted cat or dog from backend queue and updates context
     removePet = () => {
-        console.log('unmounting')
-        fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
-            method: 'delete',
-            headers: {
-                'content-type': 'application/json',
-            },
-        })
-            .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-            .then(cats => {
-                this.context.setCats(cats);
-                this.context.setAdoptedPet(this.context.cats[0]);
-            });
+        if (this.props.petType === 'cat') {
+            fetch(`${config.API_BASE_URL}/pets/api/removecat`, {
+                method: 'delete',
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+                .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+                .then(cats => {
+                    this.context.setCats(cats);
+                });
+        } else {
+            fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
+                method: 'delete',
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+                .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+                .then(dogs => {
+                    this.context.setDogs(dogs);
+                });
+        }
     }
 
 

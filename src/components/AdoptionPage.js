@@ -8,7 +8,7 @@ import config from '../config';
 import PetfulContext from '../Context/Context';
 
 
-class AdoptionPage extends React.Component {
+export default class AdoptionPage extends React.Component {
     static contextType = PetfulContext;
 
     state = {
@@ -21,23 +21,17 @@ class AdoptionPage extends React.Component {
         petType: null
     };
 
-
-    // on Componenet mount make all API get requests and store tehm in state
     componentDidMount() {
-        // fetch dogs and store them in state
         fetch(`${config.API_BASE_URL}/pets/api/getalldogs`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(dogs => {
                 this.context.setDogs(dogs);
             });
-
-        // fetch cats and store them in state
         fetch(`${config.API_BASE_URL}/pets/api/getallcats`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(cats => {
                 this.context.setCats(cats);
             });
-        // fetch people and store them in state
         fetch(`${config.API_BASE_URL}/people`)
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
@@ -73,8 +67,6 @@ class AdoptionPage extends React.Component {
                     this.context.setAdoptedPet(this.context.cats[0]);
                 });
         };
-        // dequeue top person from list
-        // needs to be done regardless of human or counter
         fetch(`${config.API_BASE_URL}/people`, {
             method: 'delete',
             headers: {
@@ -210,7 +202,7 @@ class AdoptionPage extends React.Component {
     };
 };
 
-export default AdoptionPage;
+
 
 
 

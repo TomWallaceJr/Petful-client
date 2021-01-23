@@ -91,11 +91,9 @@ class AdoptionPage extends React.Component {
     };
 
     adoptDogNow = () => {
-        // if real person set adoptedCat to nextCat set state to true and dont bother removing cat from queue
-        // set adopted in state to true will trigger rerender and dirsect to confirmation component
-        // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
-        if (this.state.realPerson) {
-            this.context.setAdoptedPet(this.context.dogs[0]);
+        // if not real person remove pet from linked list (if is real person we dont want to remove until conformation)
+        this.context.setAdoptedPet(this.context.dogs[0]);
+        if (!this.state.realPerson) {
             fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
                 method: 'delete',
                 headers: {
@@ -105,25 +103,10 @@ class AdoptionPage extends React.Component {
                 .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
                 .then(dogs => {
                     this.context.setDogs(dogs);
-                    this.context.setAdoptedPet(this.context.dogs[0]);
                 });
         }
-        // else if part of auto rotation remove dog 
-        else {
-            fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
-                method: 'delete',
-                headers: {
-                    'content-type': 'application/json',
-                },
-            })
-                .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
-                .then(dogs => {
-                    this.context.setDogs(dogs);
-                    this.context.setAdoptedPet(this.context.dogs[0]);
-                });
-        }
+
         // dequeue top person from list
-        // needs to be done regardless of human or counter
         fetch(`${config.API_BASE_URL}/people`, {
             method: 'delete',
             headers: {
@@ -133,7 +116,8 @@ class AdoptionPage extends React.Component {
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
                 this.context.setPeople(people);
-                // set adopted in state to true will trigger rerender and dirsect to confirmation component
+                // if real person set adopted to true which will redirect to conformation page and update peopleList
+                // if not just update peoplelist in state
                 if (this.state.realPerson) {
                     this.setState({
                         peopleList: people,

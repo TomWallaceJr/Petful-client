@@ -161,8 +161,12 @@ class AdoptionPage extends React.Component {
                             testFunc={this.testFunc}
                         />
                         <div className='pets-and-queue'>
-                            <NextCat adoptCatNow={this.adoptCatNow} />
-                            <NextDog adoptDogNow={this.adoptDogNow} />
+                            <NextCat
+                                adoptCatNow={this.adoptCatNow}
+                                realPerson={this.state.realPerson} />
+                            <NextDog
+                                adoptDogNow={this.adoptDogNow}
+                                realPerson={this.state.realPerson} />
                         </div>
                     </div>
                 );
@@ -188,7 +192,12 @@ class AdoptionPage extends React.Component {
                         peopleList={this.state.peopleList}
                         setNextUp={this.setNextUp}
                         testFunc={this.testFunc} />
-                    <AllPets />
+                    <NextCat
+                        adoptCatNow={this.adoptCatNow}
+                        realPerson={this.state.realPerson} />
+                    <NextDog
+                        adoptDogNow={this.adoptDogNow}
+                        realPerson={this.state.realPerson} />
                 </div>
             )
         } else {
@@ -203,7 +212,12 @@ class AdoptionPage extends React.Component {
                         peopleList={this.state.peopleList}
                         setNextUp={this.setNextUp}
                         testFunc={this.testFunc} />
-                    <AllPets />
+                    <NextCat
+                        adoptCatNow={this.adoptCatNow}
+                        realPerson={this.state.realPerson} />
+                    <NextDog
+                        adoptDogNow={this.adoptDogNow}
+                        realPerson={this.state.realPerson} />
                 </div>
             );
         };

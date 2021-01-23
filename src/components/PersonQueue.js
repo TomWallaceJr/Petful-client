@@ -13,7 +13,6 @@ class PersonQueue extends React.Component {
         intervalId: 0
     };
 
-
     handleNameChange = e => {
         this.setState({
             name: e.currentTarget.value,
@@ -50,12 +49,37 @@ class PersonQueue extends React.Component {
     };
 
     startTimer = () => {
+        // declare fake users in array
+        const fakeUsers = ['Joe', 'Jim', 'Jake', 'Keri', 'Steve', 'Conner', 'Jill'];
         this.state.intervalId = setInterval(() => {
-            if (this.context.currentuser === this.props.peopleList[1]) {
+            if (this.context.currentUser === this.props.peopleList[0]) {
+                console.log('setting next up and realperson')
                 this.props.setNextUp();
                 return clearInterval(this.state.intervalId);
             } else if (this.context.currentUser !== this.props.peopleList[0]) {
-                this.props.adoptCatNow();
+                // if less than two users add fake user to queue in context
+                if (this.props.peopleList.length <= 3) {
+                    console.log('adding a person')
+                    // generate random index
+                    let index = Math.floor(Math.random() * 6) + 1;
+                    fetch(`${config.API_BASE_URL}/people`, {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: fakeUsers[index]
+                        })
+                    }).then(res => res.json())
+                        .then(res => this.context.setPeople(res));
+                }
+                // generate random num if even adopt cat if odd adoptDog
+                let random = Math.floor(Math.random() * 2);
+                if (random % 2 == 0) {
+                    this.props.adoptCatNow();
+                } else {
+                    this.props.adoptDogNow();
+                }
             }
         }, 5000)
     };

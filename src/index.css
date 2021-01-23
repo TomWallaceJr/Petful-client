@@ -117,9 +117,38 @@ button {
     color: #1F363D;
   }
 
+  .pet-list {
+    list-style: none;
+    display: flex;
+    flex-flow: row wrap;
+    max-width: 80%;
+    margin: auto;
+    justify-content: space-between;
+  }
+
+  .pet-pic-list {
+    box-shadow: 1px 3px 3px 2px coral inset;
+    border-radius: 15px;
+    padding: 10px;
+    flex-grow: 1;
+    gap: 3%;
+    overflow: auto;
+    margin: 5px;
+    text-align: center;
+  }
+
+  
 
 
 @media only screen and (min-width: 900px) {
+
+    .pet-pic-list {
+          width: calc(100% * (1 / 5) - 10px - 1px);
+    }
+
+    .cats-and-dogs {
+        display: flex;
+    }
 
     .next-pet-container {
         width: 40%;

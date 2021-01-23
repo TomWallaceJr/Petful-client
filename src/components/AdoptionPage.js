@@ -6,6 +6,7 @@ import PersonQueue from './PersonQueue';
 import ConfirmationPage from './ConfirmationPage';
 import config from '../config';
 import PetfulContext from '../Context/Context';
+import AllPets from './AllPets';
 
 class AdoptionPage extends React.Component {
     static contextType = PetfulContext;
@@ -95,9 +96,17 @@ class AdoptionPage extends React.Component {
         // ONLY done if current user adopting (WONT SET STATE DURING TIMER )
         if (this.state.realPerson) {
             this.context.setAdoptedPet(this.context.dogs[0]);
-            this.setState({
-                adopted: true,
-            });
+            fetch(`${config.API_BASE_URL}/pets/api/removedog`, {
+                method: 'delete',
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+                .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
+                .then(dogs => {
+                    this.context.setDogs(dogs);
+                    this.context.setAdoptedPet(this.context.dogs[0]);
+                });
         }
         // else if part of auto rotation remove dog 
         else {
@@ -124,9 +133,17 @@ class AdoptionPage extends React.Component {
             .then(res => !res.ok ? res.json().then(e => Promise.reject(e)) : res.json())
             .then(people => {
                 this.context.setPeople(people);
-                this.setState({
-                    peopleList: people
-                });
+                // set adopted in state to true will trigger rerender and dirsect to confirmation component
+                if (this.state.realPerson) {
+                    this.setState({
+                        peopleList: people,
+                        adopted: true
+                    });
+                } else {
+                    this.setState({
+                        peopleList: people
+                    })
+                }
             });
     };
 
@@ -184,6 +201,7 @@ class AdoptionPage extends React.Component {
                         peopleList={this.state.peopleList}
                         setNextUp={this.setNextUp}
                         testFunc={this.testFunc} />
+                    <AllPets />
                 </div>
             )
         } else {
@@ -198,6 +216,7 @@ class AdoptionPage extends React.Component {
                         peopleList={this.state.peopleList}
                         setNextUp={this.setNextUp}
                         testFunc={this.testFunc} />
+                    <AllPets />
                 </div>
             );
         };

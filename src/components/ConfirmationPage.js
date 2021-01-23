@@ -13,7 +13,7 @@ class ConfirmationPage extends React.Component {
 
         return (
             <div className='confirmation-page'>
-                <h2>Congrats {user}! You adopoted {adoptedPet.name}!</h2>
+                <h2>Congrats {user}! You adopted {adoptedPet.name}!</h2>
                 <div className='confirmPic'>
                     <img src={adoptedPet.imageURL} alt={adoptedPet.description}></img>
                     <Link to='/'><button>Back to Home!</button></Link>

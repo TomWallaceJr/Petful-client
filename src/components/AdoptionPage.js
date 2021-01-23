@@ -192,12 +192,14 @@ class AdoptionPage extends React.Component {
                         peopleList={this.state.peopleList}
                         setNextUp={this.setNextUp}
                         testFunc={this.testFunc} />
-                    <NextCat
-                        adoptCatNow={this.adoptCatNow}
-                        realPerson={this.state.realPerson} />
-                    <NextDog
-                        adoptDogNow={this.adoptDogNow}
-                        realPerson={this.state.realPerson} />
+                    <div className='pets-and-queue'>
+                        <NextCat
+                            adoptCatNow={this.adoptCatNow}
+                            realPerson={this.state.realPerson} />
+                        <NextDog
+                            adoptDogNow={this.adoptDogNow}
+                            realPerson={this.state.realPerson} />
+                    </div>
                 </div>
             )
         } else {
@@ -212,12 +214,6 @@ class AdoptionPage extends React.Component {
                         peopleList={this.state.peopleList}
                         setNextUp={this.setNextUp}
                         testFunc={this.testFunc} />
-                    <NextCat
-                        adoptCatNow={this.adoptCatNow}
-                        realPerson={this.state.realPerson} />
-                    <NextDog
-                        adoptDogNow={this.adoptDogNow}
-                        realPerson={this.state.realPerson} />
                 </div>
             );
         };

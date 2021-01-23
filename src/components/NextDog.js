@@ -21,11 +21,13 @@ class NextDog extends React.Component {
                 <img src={imageURL} alt={imageDescription}></img>
                 <p>{age} year old {sex} {breed}</p>
                 <p>{story}</p>
-                <button
-                    className='adopt-button'
-                    onClick={this.props.adoptDogNow}>
-                    Adopt Now
+                {this.props.realPerson ? (
+                    <button
+                        className='adopt-button'
+                        onClick={this.props.adoptDogNow}>
+                        Adopt Now
                     </button>
+                ) : null}
             </div>
         );
     };

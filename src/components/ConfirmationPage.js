@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PetfulContext from '../Context/Context';
+import config from '../config';
 
 
 
@@ -32,7 +33,7 @@ class ConfirmationPage extends React.Component {
                 <h2>Congrats {user}! You adopted {adoptedPet.name}!</h2>
                 <div className='confirmPic'>
                     <img src={adoptedPet.imageURL} alt={adoptedPet.description}></img>
-                    <button onClick={() => this.removePet()}>Back Home!</button>
+                    <Link to='/'><button onClick={() => this.removePet()}>Back Home!</button></Link>
                 </div>
             </div>
         )
